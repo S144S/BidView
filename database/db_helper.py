@@ -1,9 +1,9 @@
-import sqlite3
 import logging
 import sqlite3
 from datetime import datetime
 
 logger = logging.getLogger('db')
+
 
 class Bids:
     def __init__(self, db_file: str):
@@ -14,6 +14,7 @@ class Bids:
         :return: None
         """
         self.__db = db_file
+    
     def setup(self) -> bool:
         """
         Setup the creators table.

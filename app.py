@@ -1,9 +1,10 @@
+import logging
+import os
+from logging.config import fileConfig
+
 import dash
 import dash_bootstrap_components as dbc
 from dash import html
-import logging
-from logging.config import fileConfig
-import os
 from decouple import config
 
 # Configure logging
