@@ -4,12 +4,12 @@ from logging.config import fileConfig
 
 import dash
 import dash_bootstrap_components as dbc
-from dash import dcc, html
 from dash.dependencies import Input, Output
 from decouple import config
 
+from callbacks import app_callbacks as acb
+from components.components import Components
 from database.db_helper import DbHelper
-from pages import home
 
 # Configure logging
 logs_dir = config("LOGS_DIR", default="logs")
@@ -23,33 +23,20 @@ db = DbHelper()
 
 # Initialize Dash app with the Bootstrap theme
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+components = Components()
 
-app.layout = html.Div([
-    dcc.Location(id='url', refresh=False),
-    dbc.NavbarSimple(
-        children=[
-            dbc.NavItem(dbc.NavLink("Home", href="/")),
-            dbc.NavItem(dbc.NavLink("Analysis", href="/analysis"))
-        ],
-        brand="My Dash App",
-        brand_href="#",
-        color="primary",
-        dark=True
-    ),
-    html.Div(id='page-content')
-])
+# Define the app layout
+app.layout = components.navbar()
 
-# Callback to update the page content based on the URL
-@app.callback(Output('page-content', 'children'),
-              [Input('url', 'pathname')])
-def display_page(pathname):
-    if pathname == '/analysis':
-        return html.Div([
-    html.H1("Hello, World!", className="mt-5 text-center text-primary"),
-    dbc.Button("Click Me", color="danger", className="mt-3 text-center"),
-], className="d-flex")
-    else:
-        return home.layout
+
+# Define the app callbacks
+@app.callback(
+        Output('page-content', 'children'),
+        [Input('url', 'pathname')]
+)
+def update_page(pathname):
+    return acb.main_navigator(pathname)
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)

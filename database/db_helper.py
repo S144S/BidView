@@ -54,7 +54,7 @@ class Bids:
             cursor.execute(sql)
             conn.commit()
             conn.close()
-            logger.debug("Table 'bids' created")
+            logger.debug("Table 'bids' is ready!")
             return True
         except Exception as e:
             logger.error(f"Error creating table 'bids' -> {e}")
