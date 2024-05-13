@@ -1,6 +1,6 @@
-import dash
 import dash_bootstrap_components as dbc
 from dash import dcc, html
+
 
 class Components:
     def __init__(self,):
@@ -19,7 +19,7 @@ class Components:
                 dbc.NavbarSimple(
                     children=[
                         dbc.NavItem(dbc.NavLink("Home", href="/")),
-                        dbc.NavItem(dbc.NavLink("Add New Bid", href="/add-bid")),
+                        dbc.NavItem(dbc.NavLink("Add Bid", href="/add-bid")),
                         dbc.NavItem(dbc.NavLink("Analysis", href="/analysis"))
                     ],
                     brand="Bid Analyzer Dashboard",
@@ -31,4 +31,3 @@ class Components:
             ]
         )
         return navbar
-    

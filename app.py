@@ -4,7 +4,6 @@ from logging.config import fileConfig
 
 import dash
 import dash_bootstrap_components as dbc
-from dash.dependencies import Input, Output
 from decouple import config
 
 from callbacks import app_callbacks as acb
@@ -27,17 +26,7 @@ components = Components()
 
 # Define the app layout
 app.layout = components.navbar()
-
-
-# Define the app callbacks
 acb.main_navigator()
-# @app.callback(
-#         Output('page-content', 'children'),
-#         [Input('url', 'pathname')]
-# )
-# def update_page(pathname):
-#     return acb.main_navigator(pathname)
-
 
 if __name__ == '__main__':
     app.run_server(debug=True)
