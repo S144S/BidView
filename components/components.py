@@ -19,10 +19,11 @@ class Components:
                 dbc.NavbarSimple(
                     children=[
                         dbc.NavItem(dbc.NavLink("Home", href="/")),
+                        dbc.NavItem(dbc.NavLink("Add New Bid", href="/add-bid")),
                         dbc.NavItem(dbc.NavLink("Analysis", href="/analysis"))
                     ],
-                    brand="My Dash App",
-                    brand_href="#",
+                    brand="Bid Analyzer Dashboard",
+                    brand_href="/",
                     color="primary",
                     dark=True
                 ),

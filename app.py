@@ -30,12 +30,13 @@ app.layout = components.navbar()
 
 
 # Define the app callbacks
-@app.callback(
-        Output('page-content', 'children'),
-        [Input('url', 'pathname')]
-)
-def update_page(pathname):
-    return acb.main_navigator(pathname)
+acb.main_navigator()
+# @app.callback(
+#         Output('page-content', 'children'),
+#         [Input('url', 'pathname')]
+# )
+# def update_page(pathname):
+#     return acb.main_navigator(pathname)
 
 
 if __name__ == '__main__':
