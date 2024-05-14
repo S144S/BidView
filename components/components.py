@@ -1,7 +1,7 @@
 import dash_bootstrap_components as dbc
 from dash import dcc, html
 from datetime import datetime
-
+from decouple import config
 
 class Components:
     def __init__(self,):
@@ -145,6 +145,34 @@ class Components:
         )
         return cmp
 
+    def input_select(
+            self,id: str,
+            options:list,
+            placeholder="",
+            bootstrap="mb-3"
+    ) -> dcc.Dropdown:
+        """
+        Create select input.
+
+        :param id: the id of the input
+        :type id: str
+        :param options: the options of the input
+        :type options: list
+        :param placeholder: the placeholder of the input
+        :type placeholder: str, defualt to ``
+        :param bootstrap: the bootstrap class
+        :type bootstrap: str, defualt to `form-control mb-3`
+        :return: the select input component
+        :rtype: dcc.Dropdown
+        """
+        cmp = dcc.Dropdown(
+            id=id,
+            options=options,
+            placeholder=placeholder,
+            className=bootstrap
+        )
+        return cmp
+
     def date_picker(self, id: str, bootstap="d-flex") -> dcc.DatePickerSingle:
         """
         Create a datepicker component.
@@ -185,7 +213,15 @@ class Components:
                             placeholder="Add the job title",
                             is_diable=False
                         )
-                    ], width=9)
+                    ], width=6),
+                    dbc.Col([
+                        self.lable("Job Category", for_input="category"),
+                        self.input_select(
+                            id="category",
+                            options=config("CTEGORIES").split(", "),
+                            placeholder="Select the job category"
+                        )
+                    ], width=3)
                 ]),
                 dbc.Row([
                     dbc.Col([
@@ -202,7 +238,25 @@ class Components:
                             max=23
                         )
                     ], width=3),
-                ])
+                ]),
+                dbc.Row([
+                    dbc.Col([
+                        self.lable("Bidder", for_input="bidder"),
+                        self.input_text(
+                            id="bidder",
+                            placeholder="Saeed",
+                            is_diable=True
+                        )
+                    ], width=3),
+                    dbc.Col([
+                        self.lable("Job Title", for_input="job_title"),
+                        self.input_text(
+                            id="job_title",
+                            placeholder="Add the job title",
+                            is_diable=False
+                        )
+                    ], width=6)
+                ]),
             ])
         ])
         return cmp
