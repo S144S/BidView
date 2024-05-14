@@ -1,8 +1,9 @@
-import dash_bootstrap_components as dbc
-from dash import dcc, html
 from datetime import datetime
-from decouple import config
+
+import dash_bootstrap_components as dbc
 import pycountry
+from dash import dcc, html
+from decouple import config
 
 
 class Components:
@@ -55,7 +56,7 @@ class Components:
         cmp = html.H1(title, className=bootstrap)
         return cmp
 
-    def lable(self, title:str, for_input:str, bootstrap="mb-1") -> dbc.Label:
+    def lable(self, title: str, for_input: str, bootstrap="mb-1") -> dbc.Label:
         """
         Create form lable.
 
@@ -77,7 +78,7 @@ class Components:
             placeholder="",
             bootstrap="form-control mb-3",
             is_diable=False
-        ) -> dcc.Input:
+    ) -> dcc.Input:
         """
         Create text input.
 
@@ -111,7 +112,7 @@ class Components:
             max=10000,
             step=1,
             is_diable=False
-        ) -> dcc.Input:
+    ) -> dcc.Input:
         """
         Create number input.
 
@@ -148,8 +149,9 @@ class Components:
         return cmp
 
     def input_checklist(
-            self,id: str,
-            options:list,
+            self,
+            id: str,
+            options: list,
             value=[],
             bootstrap="mb-3"
     ) -> dcc.Dropdown:
@@ -177,8 +179,9 @@ class Components:
         return cmp
 
     def input_select(
-            self,id: str,
-            options:list,
+            self,
+            id: str,
+            options: list,
             placeholder="",
             value="",
             bootstrap="mb-3"
@@ -258,7 +261,8 @@ class Components:
         return cmp
 
     def btn(
-            self,id: str,
+            self,
+            id: str,
             text: str,
             color="primary",
             n_clicks=0,
@@ -358,7 +362,10 @@ class Components:
                         )
                     ], width=3),
                     dbc.Col([
-                        self.lable("Client Country", for_input="client_country"),
+                        self.lable(
+                            "Client Country",
+                            for_input="client_country"
+                        ),
                         self.input_select(
                             id="client_country",
                             options=[
@@ -368,8 +375,11 @@ class Components:
                             placeholder="Select the country"
                         )
                     ], width=3),
-                   dbc.Col([
-                        self.lable("Client Total Spent($)", for_input="client_spent"),
+                    dbc.Col([
+                        self.lable(
+                            "Client Total Spent($)",
+                            for_input="client_spent"
+                        ),
                         self.input_number(
                             id="client_spent",
                             placeholder="Spent",
@@ -378,7 +388,7 @@ class Components:
                             step=10
                         )
                     ], width=3),
-                   dbc.Col([
+                    dbc.Col([
                         self.lable("Cleint Stars", for_input="client_stars"),
                         self.input_number(
                             id="client_stars",
@@ -411,7 +421,7 @@ class Components:
                             placeholder="Select the salary type"
                         )
                     ], width=3),
-                   dbc.Col([
+                    dbc.Col([
                         self.lable("Salary($)", for_input="salary"),
                         self.input_number(
                             id="salary",
@@ -427,7 +437,7 @@ class Components:
                         self.lable("Details", for_input="details"),
                         self.input_textarea(
                             id="details",
-                            placeholder="Are there any details you want to mention?",
+                            placeholder="Any details you want to mention?",
                             height=50
                         )
                     ], width=12)
