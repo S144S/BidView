@@ -2,6 +2,8 @@ import dash_bootstrap_components as dbc
 from dash import dcc, html
 from datetime import datetime
 from decouple import config
+import pycountry
+
 
 class Components:
     def __init__(self,):
@@ -11,7 +13,7 @@ class Components:
         :param: None
         :return: None
         """
-        self.zero = 0
+        self.country_names = [country.name for country in pycountry.countries]
 
     def navbar(self) -> html.Div:
         """
@@ -238,24 +240,63 @@ class Components:
                             max=23
                         )
                     ], width=3),
-                ]),
-                dbc.Row([
                     dbc.Col([
-                        self.lable("Bidder", for_input="bidder"),
-                        self.input_text(
-                            id="bidder",
-                            placeholder="Saeed",
-                            is_diable=True
+                        self.lable("Bid Cost", for_input="cost"),
+                        self.input_number(
+                            id="cost",
+                            placeholder="Bid Cost(Connenct)",
+                            min=0,
+                            max=50
                         )
                     ], width=3),
                     dbc.Col([
-                        self.lable("Job Title", for_input="job_title"),
-                        self.input_text(
-                            id="job_title",
-                            placeholder="Add the job title",
-                            is_diable=False
+                        self.lable("Proposal Version", for_input="version"),
+                        self.input_select(
+                            id="version",
+                            options=config("PROPOSAL_VERSION").split(", "),
+                            placeholder="Select the version"
                         )
-                    ], width=6)
+                    ], width=3)
+                ]),
+                dbc.Row([
+                    dbc.Col([
+                        self.lable("Client Name", for_input="client_name"),
+                        self.input_text(
+                            id="client_name",
+                            placeholder="Add the client name",
+                        )
+                    ], width=3),
+                    dbc.Col([
+                        self.lable("Client Country", for_input="client_country"),
+                        self.input_select(
+                            id="client_country",
+                            options=[
+                                {'label': country, 'value': country}
+                                for country in self.country_names
+                            ],
+                            placeholder="Select the country"
+                        )
+                    ], width=3),
+                   dbc.Col([
+                        self.lable("Client Total Spent($)", for_input="client_spent"),
+                        self.input_number(
+                            id="client_spent",
+                            placeholder="Spent",
+                            min=0,
+                            max=5000000000000000000,
+                            step=10
+                        )
+                    ], width=3),
+                   dbc.Col([
+                        self.lable("Cleint Stars", for_input="client_stars"),
+                        self.input_number(
+                            id="client_stars",
+                            placeholder="Stars (0-5)",
+                            min=0,
+                            max=5,
+                            step=0.1
+                        )
+                    ], width=3),
                 ]),
             ])
         ])
