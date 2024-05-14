@@ -1,5 +1,6 @@
 import dash_bootstrap_components as dbc
 from dash import dcc, html
+from datetime import datetime
 
 
 class Components:
@@ -10,7 +11,7 @@ class Components:
         :param: None
         :return: None
         """
-        pass
+        self.zero = 0
 
     def navbar(self) -> html.Div:
         """
@@ -43,8 +44,11 @@ class Components:
         Create the page title.
 
         :param title: the title of the page
+        :type title: str
         :param bootstrap: the bootstrap class
+        :type bootstrap: str, defualt to `mt-5 text-center`
         :return: the page title component
+        :rtype: html.H1
         """
         cmp = html.H1(title, className=bootstrap)
         return cmp
@@ -58,7 +62,7 @@ class Components:
         :param for_input: the id of the input
         :type for_input: str
         :param bootstrap: the bootstrap class
-        :type bootstrap: str
+        :type bootstrap: str, defualt to `mb-1`
         :return: the lable component
         :rtype: dbc.Lable
         """
@@ -78,9 +82,9 @@ class Components:
         :param id: the id of the input
         :type id: str
         :param placeholder: the placeholder of the input
-        :type placeholder: str, defualt to ""
+        :type placeholder: str, defualt to ``
         :param bootstrap: the bootstrap class
-        :type bootstrap: str, defualt to form-control mb-3
+        :type bootstrap: str, defualt to `form-control mb-3`
         :param is_diable: if the input is going to be disable or not
         :type is_diable: bool, defualt to False
         :return: the text input component
@@ -93,6 +97,67 @@ class Components:
             disabled=is_diable,
             className=bootstrap
         )
+        return cmp
+
+    def input_number(
+            self,
+            id: str,
+            value="",
+            placeholder="",
+            bootstrap="form-control mb-3",
+            min=0,
+            max=10000,
+            step=1,
+            is_diable=False
+        ) -> dcc.Input:
+        """
+        Create number input.
+
+        :param id: the id of the input
+        :type id: str
+        :param placeholder: the placeholder of the input
+        :type placeholder: str, defualt to ``
+        :param value: the value of the input
+        :type value: str, defualt to ``
+        :param bootstrap: the bootstrap class
+        :type bootstrap: str, defualt to `form-control mb-3`
+        :param min: the min value of the input
+        :type min: integer, defualt to 0
+        :param max: the max value of the input
+        :type max: integer, defualt to 10000
+        :param step: the step value of the input
+        :type step: integer, defualt to 1
+        :param is_diable: if the input is going to be disable or not
+        :type is_diable: bool, defualt to False
+        :return: the text input component
+        :rtype: dcc.Input
+        """
+        cmp = dcc.Input(
+            id=id,
+            type="number",
+            value=value,
+            placeholder=placeholder,
+            min=min,
+            max=max,
+            step=step,
+            disabled=is_diable,
+            className=bootstrap
+        )
+        return cmp
+
+    def date_picker(self, id: str, bootstap="d-flex") -> dcc.DatePickerSingle:
+        """
+        Create a datepicker component.
+
+        :param id: the id of the datepicker
+        :type id: str
+        :param bootstrap: the bootstrap class
+        :type bootstrap: str, defualt to `d-flex`
+        :return: the datepicker component
+        :rtype: dcc.DatePickerSingle
+        """
+        today = datetime.today().date()
+        cmp = dcc.DatePickerSingle(id=id, date=today, className=bootstap)
         return cmp
 
     def add_bid_form(self):
@@ -125,12 +190,18 @@ class Components:
                 dbc.Row([
                     dbc.Col([
                         self.lable("Date", for_input="datepicker"),
-                        self.input_text(
-                            id="datepicker",
-                            placeholder="Add the job title",
-                            is_diable=False
+                        self.date_picker(id="datepicker"),
+                    ], width=3),
+                    dbc.Col([
+                        self.lable("Hour", for_input="hour"),
+                        self.input_number(
+                            id="hour",
+                            value=datetime.now().hour,
+                            placeholder="Hour",
+                            min=0,
+                            max=23
                         )
-                    ], width=6)
+                    ], width=3),
                 ])
             ])
         ])
