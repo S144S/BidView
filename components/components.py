@@ -122,13 +122,13 @@ class Components:
         :param value: the value of the input
         :type value: str, defualt to ``
         :param bootstrap: the bootstrap class
-        :type bootstrap: str, defualt to `form-control mb-3`
+        :type bootstrap: str, defualt to `mb-3`
         :param min: the min value of the input
-        :type min: integer, defualt to 0
+        :type min: int, defualt to 0
         :param max: the max value of the input
-        :type max: integer, defualt to 10000
+        :type max: int, defualt to 10000
         :param step: the step value of the input
-        :type step: integer, defualt to 1
+        :type step: int, defualt to 1
         :param is_diable: if the input is going to be disable or not
         :type is_diable: bool, defualt to False
         :return: the text input component
@@ -147,10 +147,40 @@ class Components:
         )
         return cmp
 
+    def input_checklist(
+            self,id: str,
+            options:list,
+            value=[],
+            bootstrap="mb-3"
+    ) -> dcc.Dropdown:
+        """
+        Create checklist froup input.
+
+        :param id: the id of the input
+        :type id: str
+        :param options: the options of the input
+        :type options: list
+        :param value: the value of the input
+        :type value: list
+        :param bootstrap: the bootstrap class
+        :type bootstrap: str, defualt to `mb-3`
+        :return: the select input component
+        :rtype: dcc.Dropdown
+        """
+        cmp = dcc.Checklist(
+            id=id,
+            options=options,
+            value=value,
+            labelStyle={'display': 'block'},
+            className=bootstrap
+        )
+        return cmp
+
     def input_select(
             self,id: str,
             options:list,
             placeholder="",
+            value="",
             bootstrap="mb-3"
     ) -> dcc.Dropdown:
         """
@@ -171,6 +201,43 @@ class Components:
             id=id,
             options=options,
             placeholder=placeholder,
+            value=value,
+            className=bootstrap
+        )
+        return cmp
+
+    def input_textarea(
+            self,
+            id: str,
+            placeholder='Enter your text here...',
+            rows=5,
+            width="100%",
+            height="200px",
+            bootstrap="mb-3",
+    ) -> dcc.Textarea:
+        """
+        Create textarea input.
+
+        :param id: the id of the input
+        :type id: str
+        :param placeholder: the placeholder of the input
+        :type placeholder: str, defualt to `Enter your text here...`
+        :param rows: the rows of the input
+        :type rows: int
+        :param width: the width of the input
+        :type width: str, defualt to `100%`
+        :param height: the height of the input
+        :type height: str, defualt to `200px`
+        :param bootstrap: the bootstrap class
+        :type bootstrap: str, defualt to `mb-3`
+        :return: the textarea input component
+        :rtype: dcc.Textarea
+        """
+        cmp = dcc.Textarea(
+            id=id,
+            placeholder=placeholder,
+            rows=rows,
+            style={'width': width, 'height': height},
             className=bootstrap
         )
         return cmp
@@ -188,6 +255,30 @@ class Components:
         """
         today = datetime.today().date()
         cmp = dcc.DatePickerSingle(id=id, date=today, className=bootstap)
+        return cmp
+
+    def btn(
+            self,id: str,
+            text: str,
+            color="primary",
+            n_clicks=0,
+            bootstrap="mt-3"
+    ) -> dbc.Button:
+        """
+        Create a button component.
+
+        :param id: the id of the button
+        :type id: str
+        :param text: the text of the button
+        :type text: str
+        :param color: the color of the button
+        :type color: str, defualt to `primary`
+        :param n_clicks: the number of clicks of the button
+        :type n_clicks: int, defualt to 0
+        :return: the button component
+        :rtype: dbc.Button
+        """
+        cmp = dbc.Button(text, id=id, color=color)
         return cmp
 
     def add_bid_form(self):
@@ -297,6 +388,54 @@ class Components:
                             step=0.1
                         )
                     ], width=3),
+                ]),
+                dbc.Row([
+                    dbc.Col([
+                        self.lable("Is Invite?", for_input="is_invite"),
+                        self.input_checklist(
+                            id="is_invite",
+                            options=[
+                                {"label": "", "value": "Yes"},
+                            ]
+                        )
+                    ], width=3),
+                    dbc.Col([
+                        self.lable("Salary Type", for_input="salary_type"),
+                        self.input_select(
+                            id="salary_type",
+                            options=[
+                                {'label': 'Hourly', 'value': 'hourly'},
+                                {'label': 'Fix Price', 'value': 'fix'},
+                            ],
+                            value='hourly',
+                            placeholder="Select the salary type"
+                        )
+                    ], width=3),
+                   dbc.Col([
+                        self.lable("Salary($)", for_input="salary"),
+                        self.input_number(
+                            id="salary",
+                            placeholder="Salary",
+                            min=20,
+                            max=5000000000000000000,
+                            step=10
+                        )
+                    ], width=3)
+                ]),
+                dbc.Row([
+                    dbc.Col([
+                        self.lable("Details", for_input="details"),
+                        self.input_textarea(
+                            id="details",
+                            placeholder="Are there any details you want to mention?",
+                            height=50
+                        )
+                    ], width=12)
+                ]),
+                dbc.Row([
+                    dbc.Col([
+                        self.btn(id="submit_bid", text="Submit")
+                    ], width=12)
                 ]),
             ])
         ])
