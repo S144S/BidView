@@ -455,6 +455,7 @@ class Components:
                         ])
                     ], width=12)
                 ]),
+                dcc.Store(id='n-clicks-store', data={'n_clicks': 0})
             ])
         ])
         return cmp

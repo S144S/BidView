@@ -33,7 +33,7 @@ class Bids:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 bidder TEXT NOT NULL,
                 bid_date TEXT,
-                bid_hour TEXT,
+                bid_hour INTEGER,
                 bid_cost INTEGER DEFAULT 0,
                 proposal_version TEXT,
                 job_title TEXT NOT NULL,
