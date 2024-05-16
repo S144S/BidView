@@ -3,10 +3,12 @@ from dash.dependencies import Input, Output, State
 
 from pages import add_bid, home
 from utils.utils import Utils
+from database.db_helper import DbHelper
 
 home_layouts = home.Home()
 add_bid_layouts = add_bid.AddBid()
 utils = Utils()
+db = DbHelper()
 
 
 def main_navigator():
@@ -68,7 +70,15 @@ def submit_add_bid_form():
                 title, category, date, hour, cost, country, stars, salary_type
             )
             if status:
-                pass
+                bid_data = utils.create_new_bid_dict(
+                    bidder, title, category, date, hour, cost,
+                    version, name, country, spent, stars,
+                    is_invite, salary_type, salary, detail
+                )
+                done = db.bids.insert(bid_data)
+                if not done:
+                    msg = "Faild to add your new bid into the db"
+                    class_name = "ms-3 text-danger"
             # Reset n_clicks of submit button
             n_click_store['n_clicks'] = 0
             return msg, class_name, n_click_store['n_clicks']

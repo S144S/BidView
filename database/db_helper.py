@@ -61,6 +61,32 @@ class Bids:
             logger.error(f"Error creating table 'bids' -> {e}")
             return False
 
+    def insert(self, data: dict) -> bool:
+        """
+        Insert data into the bids table.
+
+        :param data: A dictionary containing the data to be inserted.
+        :type data: dict
+        :return: the insert status (True or False)
+        :rtype: bool
+        """
+        try:
+            sql = """INSERT INTO bids (
+                bidder, bid_date, bid_hour, bid_cost, proposal_version,
+                job_title, job_category, client_name, client_country,
+                client_stars, client_total_spent, is_invite, is_view,
+                is_reply, is_hire, salary_type, salary, details
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
+            conn = sqlite3.connect(self.__db)
+            cursor = conn.cursor()
+            cursor.execute(sql, tuple(data.values()))
+            conn.commit()
+            conn.close()
+            logger.info(f"{data['job_title']} inserted successfully")
+            return True
+        except Exception as e:
+            logger.error(f"Error inserting {data['job_title']} -> {e}")
+            return False
 
 class DbHelper:
     def __init__(self):

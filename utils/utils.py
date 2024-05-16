@@ -68,6 +68,7 @@ class Utils:
 
     def create_new_bid_dict(
             self,
+            bidder: str,
             title: str, category: str,
             date: str, hour: int,
             cost: int, version: str,
@@ -112,4 +113,23 @@ class Utils:
         and a class name for styling purposes.
         :rtype: tuple
         """
-        pass
+        data = {}
+        data["bidder"] = bidder
+        data["bid_date"] = date
+        data["bid_hour"] = hour
+        data["bid_cost"] = cost
+        data["proposal_version"] = version
+        data["job_title"] = title
+        data["job_category"] = category
+        data["client_name"] = name
+        data["client_country"] = country
+        data["client_stars"] = stars
+        data["client_total_spent"] = spent
+        data["is_invite"] = is_invite
+        data["is_view"] = False
+        data["is_reply"] = False
+        data["is_hire"] = False
+        data["salary_type"] = salary_type
+        data["salary"] = salary
+        data["details"] = detail
+        return data
