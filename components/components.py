@@ -75,6 +75,7 @@ class Components:
     def input_text(
             self,
             id: str,
+            value="",
             placeholder="",
             bootstrap="form-control mb-3",
             is_diable=False
@@ -84,6 +85,8 @@ class Components:
 
         :param id: the id of the input
         :type id: str
+        :param value: the value of the input
+        :type value: str, defualt to ``
         :param placeholder: the placeholder of the input
         :type placeholder: str, defualt to ``
         :param bootstrap: the bootstrap class
@@ -96,6 +99,7 @@ class Components:
         cmp = dcc.Input(
             id=id,
             type="text",
+            value=value,
             placeholder=placeholder,
             disabled=is_diable,
             className=bootstrap
@@ -299,7 +303,8 @@ class Components:
                         self.lable("Bidder", for_input="bidder"),
                         self.input_text(
                             id="bidder",
-                            placeholder="Saeed",
+                            value="Saeed",
+                            placeholder="",
                             is_diable=True
                         )
                     ], width=3),
@@ -444,7 +449,10 @@ class Components:
                 ]),
                 dbc.Row([
                     dbc.Col([
-                        self.btn(id="submit_bid", text="Submit")
+                        html.Div([
+                            self.btn(id="submit-btn", text="Submit"),
+                            html.Span(id="submit-msg")
+                        ])
                     ], width=12)
                 ]),
             ])
