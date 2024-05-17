@@ -18,22 +18,31 @@ class Home:
         :param: None
         :return: the layout of the home page
         """
-        layout = dbc.Container([
-            html.H1("Welcome to My Dash App", className="mt-5 text-center"),
-            dbc.Row([
-                dbc.Col([
-                    html.Div("Name:", className="mb-2"),
-                    dcc.Input(id='name-input', type='text', placeholder='Enter your name', className="form-control mb-3")
-                ], width=6),
-                dbc.Col([
-                    html.Div("Age:", className="mb-2"),
-                    dcc.Input(id='age-input', type='number', placeholder='Enter your age', className="form-control mb-3")
-                ], width=3),
-                dbc.Col([
-                    html.Div("Salary:", className="mb-2"),
-                    dcc.Input(id='salary-input', type='number', placeholder='Enter your salary', className="form-control mb-3")
-                ], width=3)
-            ]),
-            dbc.Button("Submit", id='submit-button', n_clicks=0, color="primary", className="mt-3")
-        ])
-        return layout
+        data = [
+            {"id": 1, "name": "Saeed", "phone": "09197241207"},
+            {"id": 2, "name": "Nastaran", "phone": "09154243103"},
+            {"id": 3, "name": "Hossein", "phone": "09122117222"},
+            {"id": 4, "name": "Hossein", "phone": "09122117222"},
+            {"id": 5, "name": "Hossein", "phone": "09122117222"}
+        ]
+
+        cards = []
+        for user in data:
+            card = dbc.Card([
+                dbc.CardBody([
+                    dbc.Row([
+                        dbc.Col([
+                            dbc.Label("Name:"),
+                            dbc.Input(id=f'name-input-{user["id"]}', type='text', value=user["name"], className="mb-2"),
+                        ]),
+                        dbc.Col([
+                            dbc.Label("Phone:"),
+                            dbc.Input(id=f'phone-input-{user["id"]}', type='text', value=user["phone"], className="mb-2"),
+                        ]),
+                    ]),
+                    dbc.Button("Update", id=f'update-button-{user["id"]}', color="primary", n_clicks=0)
+                ])
+            ], className="mb-3")
+            cards.append(card)
+
+        return dbc.Container(cards)

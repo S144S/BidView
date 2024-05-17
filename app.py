@@ -35,6 +35,7 @@ components = Components()
 app.layout = components.navbar()
 acb.main_navigator()
 acb.submit_add_bid_form()
+acb.register_callbacks()
 
 if __name__ == '__main__':
     app.run_server(debug=True)
