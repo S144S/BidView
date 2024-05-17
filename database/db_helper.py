@@ -1,7 +1,7 @@
 import logging
 import sqlite3
 from datetime import datetime
-
+import pandas as pd
 from decouple import config
 
 logger = logging.getLogger('db')
@@ -87,6 +87,12 @@ class Bids:
         except Exception as e:
             logger.error(f"Error inserting {data['job_title']} -> {e}")
             return False
+
+    def get_all_as_df(self) -> pd.DataFrame:
+        with sqlite3.connect(self.__db) as conn:
+            df = pd.read_sql_query("SELECT * FROM bids", conn)
+        return df
+
 
 class DbHelper:
     def __init__(self):

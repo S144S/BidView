@@ -42,7 +42,7 @@ class Home:
                     ]),
                     dbc.Button("Update", id=f'update-button-{user["id"]}', color="primary", n_clicks=0)
                 ])
-            ], className="mb-3")
+            ], className="my-3")
             cards.append(card)
 
         return dbc.Container(cards)
