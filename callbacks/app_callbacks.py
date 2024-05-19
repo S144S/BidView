@@ -4,6 +4,7 @@ from dash.dependencies import Input, Output, State
 from database.db_helper import DbHelper
 from pages import add_bid, home
 from utils.utils import Utils
+import pandas as pd
 
 home_layouts = home.Home()
 add_bid_layouts = add_bid.AddBid()
@@ -83,6 +84,45 @@ def submit_add_bid_form():
             n_click_store['n_clicks'] = 0
             return msg, class_name, n_click_store['n_clicks']
 
+def update_bids():
+    data = db.bids.get_all_as_df()
+    @callback(
+        [Output(f'submit-msg-{bid["id"]}', 'children') for  _, bid in data.iterrows()],
+        [Output(f'submit-msg-{bid["id"]}', 'className') for  _, bid in data.iterrows()],
+        [Input(f'update-button-{bid["id"]}', 'n_clicks') for _, bid in data.iterrows()],
+        [State(f'is_view-{bid["id"]}', 'value') for  _, bid in data.iterrows()],
+        [State(f'is_reply-{bid["id"]}', 'value') for  _, bid in data.iterrows()],
+        [State(f'is_hire-{bid["id"]}', 'value') for  _, bid in data.iterrows()],
+        [State(f'detail-{bid["id"]}', 'value') for  _, bid in data.iterrows()],
+        [State(f'submit-msg-{bid["id"]}', 'id') for _, bid in data.iterrows()],
+    )
+    def wrapper(*args):
+        ctx = callback_context
+        if not ctx.triggered:
+            return ''
+        updated_messages = []
+        updated_classnames = []
+        msg_data = []
+        print(args)
+        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+        bid_id = button_id.split('-')[-1]
+        print(button_id, bid_id)
+        idx = data.index[data['id'] == int(bid_id)][0]
+        new_is_view = args[len(data) + idx]
+        new_is_reply = args[2 * len(data) + idx]
+        new_is_hire = args[3 * len(data) + idx]
+        new_detail = args[4 * len(data) + idx]
+        print(new_is_hire, new_is_reply, new_is_view)
+        print(new_detail)
+        # for _ in range(3):
+        #     if button_id.startswith(f'update-button-{bid_id}'):
+        #         msg_data.append('Success')
+        #         msg_data.append('ms-2 text-success')
+        #     else:
+        #         msg_data.append('')
+        #         msg_data.append('')
+        # print(msg_data)
+        # return msg_data
 
 # def register_callbacks():
 #     data = [

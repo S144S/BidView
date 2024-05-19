@@ -664,9 +664,9 @@ class Components:
                 ]),
                 dbc.Row([
                     dbc.Col([
-                        self.lable("Details", for_input="detail"),
+                        self.lable("Details", for_input=f"detail-{data['id']}"),
                         self.input_textarea(
-                            id="detail",
+                            id=f"detail-{data['id']}",
                             value=f'{data["details"]}',
                             rows=2,
                             height="50px"
@@ -674,8 +674,7 @@ class Components:
                     ], width=12),
                 ]),
                 self.btn(id=f'update-button-{data["id"]}', text="Update", color="info"),
-                html.Span(id=f'submit-msg-{data["id"]}'),
-                dcc.Store(id=f'n-clicks-store-{data["id"]}', data={'n_clicks': 0})
+                html.Span(id=f'submit-msg-{data["id"]}')
             ])
         ], class_name="my-3")
         return card
