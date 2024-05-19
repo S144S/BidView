@@ -1,6 +1,8 @@
 import dash_bootstrap_components as dbc
 from dash import dcc, html
-
+from components.components import Components
+import pandas as pd
+from database.db_helper import DbHelper
 class Home:
     def __init__(self):
         """
@@ -9,7 +11,8 @@ class Home:
         :param: None
         :return: None
         """
-        pass
+        self.cmp = Components()
+        self.db = DbHelper()
 
     def layout(self):
         """
@@ -18,31 +21,11 @@ class Home:
         :param: None
         :return: the layout of the home page
         """
-        data = [
-            {"id": 1, "name": "Saeed", "phone": "09197241207"},
-            {"id": 2, "name": "Nastaran", "phone": "09154243103"},
-            {"id": 3, "name": "Hossein", "phone": "09122117222"},
-            {"id": 4, "name": "Hossein", "phone": "09122117222"},
-            {"id": 5, "name": "Hossein", "phone": "09122117222"}
-        ]
-
+        bids_data = self.db.bids.get_all_as_df()
+        print(bids_data)
         cards = []
-        for user in data:
-            card = dbc.Card([
-                dbc.CardBody([
-                    dbc.Row([
-                        dbc.Col([
-                            dbc.Label("Name:"),
-                            dbc.Input(id=f'name-input-{user["id"]}', type='text', value=user["name"], className="mb-2"),
-                        ]),
-                        dbc.Col([
-                            dbc.Label("Phone:"),
-                            dbc.Input(id=f'phone-input-{user["id"]}', type='text', value=user["phone"], className="mb-2"),
-                        ]),
-                    ]),
-                    dbc.Button("Update", id=f'update-button-{user["id"]}', color="primary", n_clicks=0)
-                ])
-            ], className="my-3")
+        for _, data in bids_data.iterrows():
+            card = self.cmp.bid_card(data)
             cards.append(card)
 
         return dbc.Container(cards)

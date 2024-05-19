@@ -4,7 +4,7 @@ import dash_bootstrap_components as dbc
 import pycountry
 from dash import dcc, html
 from decouple import config
-
+import pandas as pd
 
 class Components:
     def __init__(self,):
@@ -289,6 +289,35 @@ class Components:
         cmp = dbc.Button(text, id=id, color=color)
         return cmp
 
+    def card_label(
+            self,
+            text: str,
+            text_color: str,
+            bg_color: str
+    ) -> html.Div:
+        """
+        Create a card label.
+
+        :param text: the text of the label
+        :type text: str
+        :param text_color: the color of the text of the label
+        :type text_color: str
+        :param bg_color: the background color of the label
+        :type bg_color: str
+        :return: the label component
+        :rtype: html.Div
+        """
+        label_style = {
+            "backgroundColor": bg_color,
+            "color": text_color,
+            "padding": "0.2em 0.4em",
+            "borderRadius": "0.25em",
+            "fontWeight": "bold",
+            "marginRight": "0.5em"
+        }
+        cmp = html.Span(text, style=label_style)
+        return html.Div([cmp], className="mb-3")
+
     def add_bid_form(self):
         """
         Create the add bid form.
@@ -459,3 +488,117 @@ class Components:
             ])
         ])
         return cmp
+
+    def bid_card(self, data: pd.DataFrame) -> dbc.Card:
+        """
+        Create a datepicker component.
+
+        :param data: the datafram of the bid's info
+        :type id: pd.DataFrame
+        :return: the bid card
+        :rtype: dbc.Card
+        """
+        if not data["client_name"]:
+            data["client_name"] = "No Name"
+        card_lable_text = "BID"
+        card_label_color = "#a7288a"
+        if data["is_invite"]:
+            card_lable_text = "INVITE"
+            card_label_color = "#28a745"
+        card = dbc.Card([
+            dbc.CardBody([
+                dbc.Row([
+                    self.card_label(
+                        text=card_lable_text,
+                        text_color="white",
+                        bg_color=card_label_color
+                    )
+                ]),
+                dbc.Row([
+                    dbc.Col([
+                        self.lable("Bidder", for_input="bidder"),
+                        self.input_text(
+                            id="bidder",
+                            value=data["bidder"],
+                            is_diable=True
+                        )
+                    ], width=2),
+                    dbc.Col([
+                        self.lable("Title", for_input="title"),
+                        self.input_text(
+                            id="title",
+                            value=f'{data["job_title"]}',
+                            is_diable=True
+                        )
+                    ], width=4),
+                    dbc.Col([
+                        self.lable("Category", for_input="category"),
+                        self.input_text(
+                            id="category",
+                            value=f'{data["job_category"]}',
+                            is_diable=True
+                        )
+                    ], width=2),
+                    dbc.Col([
+                        self.lable("Date and Time", for_input="date"),
+                        self.input_text(
+                            id="date",
+                            value=f'{data["bid_date"]} @ {data["bid_hour"]}',
+                            is_diable=True
+                        )
+                    ], width=2),
+                    dbc.Col([
+                        self.lable("Cost", for_input="cost"),
+                        self.input_text(
+                            id="cost",
+                            value=f'{data["bid_cost"]} connects',
+                            is_diable=True
+                        )
+                    ], width=2)
+                ]),
+                dbc.Row([
+                    dbc.Col([
+                        self.lable("Propodal", for_input="propodal"),
+                        self.input_text(
+                            id="propodal",
+                            value=f'{data["proposal_version"]}',
+                            is_diable=True
+                        )
+                    ], width=2),
+                    dbc.Col([
+                        self.lable("Country", for_input="country"),
+                        self.input_text(
+                            id="country",
+                            value=f'{data["client_country"]}',
+                            is_diable=True
+                        )
+                    ], width=3),
+                    dbc.Col([
+                        self.lable("Client Name", for_input="name"),
+                        self.input_text(
+                            id="name",
+                            value=f'{data["client_name"]}',
+                            is_diable=True
+                        )
+                    ], width=2),
+                    dbc.Col([
+                        self.lable("Client State", for_input="client_state"),
+                        self.input_text(
+                            id="client_state",
+                            value=f'{data["client_total_spent"]}$ Spent - {data["client_stars"]}★',
+                            is_diable=True
+                        )
+                    ], width=3),
+                    dbc.Col([
+                        self.lable("Salary", for_input="salary"),
+                        self.input_text(
+                            id="salary",
+                            value=f'{data["salary_type"]} - {data["salary"]}$',
+                            is_diable=True
+                        )
+                    ], width=2)
+                ]),
+                dbc.Button("Update", id=f'update-button-{data["id"]}', color="primary", n_clicks=0)
+            ])
+        ], class_name="my-3")
+        return card

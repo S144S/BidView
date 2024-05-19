@@ -84,33 +84,33 @@ def submit_add_bid_form():
             return msg, class_name, n_click_store['n_clicks']
 
 
-def register_callbacks():
-    data = [
-        {"id": 1, "name": "Saeed", "phone": "09197241207"},
-        {"id": 2, "name": "Nastaran", "phone": "09154243103"},
-        {"id": 3, "name": "Hossein", "phone": "09122117222"},
-        {"id": 4, "name": "Hossein", "phone": "09122117222"},
-        {"id": 5, "name": "Hossein", "phone": "09122117222"}
-    ]
-    @callback(
-        [Input(f'update-button-{user["id"]}', 'n_clicks') for user in data],
-        [State(f'name-input-{user["id"]}', 'value') for user in data],
-        [State(f'phone-input-{user["id"]}', 'value') for user in data]
-    )
-    def wrapper(*args):
-        ctx = callback_context
-        if not ctx.triggered:
-            return ''
+# def register_callbacks():
+#     data = [
+#         {"id": 1, "name": "Saeed", "phone": "09197241207"},
+#         {"id": 2, "name": "Nastaran", "phone": "09154243103"},
+#         {"id": 3, "name": "Hossein", "phone": "09122117222"},
+#         {"id": 4, "name": "Hossein", "phone": "09122117222"},
+#         {"id": 5, "name": "Hossein", "phone": "09122117222"}
+#     ]
+#     @callback(
+#         [Input(f'update-button-{user["id"]}', 'n_clicks') for user in data],
+#         [State(f'name-input-{user["id"]}', 'value') for user in data],
+#         [State(f'phone-input-{user["id"]}', 'value') for user in data]
+#     )
+#     def wrapper(*args):
+#         ctx = callback_context
+#         if not ctx.triggered:
+#             return ''
         
-        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-        user_id = button_id.split('-')[-1]
-        print(user_id)
-        idx = [i for i, user in enumerate(data) if user["id"] == int(user_id)][0]
-        print(idx)
+#         button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+#         user_id = button_id.split('-')[-1]
+#         print(user_id)
+#         idx = [i for i, user in enumerate(data) if user["id"] == int(user_id)][0]
+#         print(idx)
 
-        new_name = args[len(data) + idx]
-        new_phone = args[2 * len(data) + idx]
+#         new_name = args[len(data) + idx]
+#         new_phone = args[2 * len(data) + idx]
 
-        print(new_name, new_phone)
+#         print(new_name, new_phone)
         
-        return None
+#         return None
