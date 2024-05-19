@@ -1,10 +1,11 @@
 from datetime import datetime
 
 import dash_bootstrap_components as dbc
+import pandas as pd
 import pycountry
 from dash import dcc, html
 from decouple import config
-import pandas as pd
+
 
 class Components:
     def __init__(self,):
@@ -157,7 +158,8 @@ class Components:
             id: str,
             options: list,
             value=[],
-            bootstrap="mb-3"
+            bootstrap="mb-3",
+            is_disable=False
     ) -> dcc.Dropdown:
         """
         Create checklist froup input.
@@ -170,6 +172,8 @@ class Components:
         :type value: list
         :param bootstrap: the bootstrap class
         :type bootstrap: str, defualt to `mb-3`
+        :param is_disable: if the input is going to be disable or not
+        :type is_disable: bool, defualt to False
         :return: the select input component
         :rtype: dcc.Dropdown
         """
@@ -178,7 +182,7 @@ class Components:
             options=options,
             value=value,
             labelStyle={'display': 'block'},
-            className=bootstrap
+            className=bootstrap,
         )
         return cmp
 
@@ -216,6 +220,7 @@ class Components:
     def input_textarea(
             self,
             id: str,
+            value="",
             placeholder='Enter your text here...',
             rows=5,
             width="100%",
@@ -227,6 +232,8 @@ class Components:
 
         :param id: the id of the input
         :type id: str
+        :param value: the value of the input
+        :type value: str, defualt to ``
         :param placeholder: the placeholder of the input
         :type placeholder: str, defualt to `Enter your text here...`
         :param rows: the rows of the input
@@ -243,8 +250,9 @@ class Components:
         cmp = dcc.Textarea(
             id=id,
             placeholder=placeholder,
+            value=value,
             rows=rows,
-            style={'width': width, 'height': height},
+            style={'width': width, 'height': height, 'padding-left': '7px'},
             className=bootstrap
         )
         return cmp
@@ -498,13 +506,27 @@ class Components:
         :return: the bid card
         :rtype: dbc.Card
         """
+        # Prepare conditional data
+        date_str = data["bid_date"].strftime("%d %b %Y")
         if not data["client_name"]:
             data["client_name"] = "No Name"
+        if not data["details"]:
+            data["details"] = "THERE IS NO DETAILS!"
         card_lable_text = "BID"
         card_label_color = "#a7288a"
         if data["is_invite"]:
             card_lable_text = "INVITE"
             card_label_color = "#28a745"
+        is_view_value = []
+        if data["is_view"]:
+            is_view_value = ["Yes"]
+        is_reply_value = []
+        if data["is_reply"]:
+            is_reply_value = ["Yes"]
+        is_hire_value = []
+        if data["is_hire"]:
+            is_hire_value = ["Yes"]
+
         card = dbc.Card([
             dbc.CardBody([
                 dbc.Row([
@@ -543,7 +565,7 @@ class Components:
                         self.lable("Date and Time", for_input="date"),
                         self.input_text(
                             id="date",
-                            value=f'{data["bid_date"]} @ {data["bid_hour"]}',
+                            value=f'{date_str} @ {data["bid_hour"]}',
                             is_diable=True
                         )
                     ], width=2),
@@ -598,7 +620,62 @@ class Components:
                         )
                     ], width=2)
                 ]),
-                dbc.Button("Update", id=f'update-button-{data["id"]}', color="primary", n_clicks=0)
+                html.Hr(),
+                dbc.Row([
+                    dbc.Col([
+                        html.Div([
+                            self.lable("Is Viewed?", for_input=f"is_view-{data['id']}"),
+                            self.input_checklist(
+                                id=f"is_view-{data['id']}",
+                                value=is_view_value,
+                                options=[
+                                    {"label": "", "value": "Yes"},
+                                ],
+                                bootstrap="mb-3 ms-2"
+                            )
+                        ], className='d-flex')
+                    ], width=3),
+                    dbc.Col([
+                        html.Div([
+                            self.lable("Is Replied?", for_input=f"is_reply-{data['id']}"),
+                            self.input_checklist(
+                                id=f"is_reply-{data['id']}",
+                                value=is_reply_value,
+                                options=[
+                                    {"label": "", "value": "Yes"},
+                                ],
+                                bootstrap="mb-3 ms-2"
+                            )
+                        ], className='d-flex')
+                    ], width=3),
+                    dbc.Col([
+                        html.Div([
+                            self.lable("Are You Hired?", for_input=f"is_hire-{data['id']}"),
+                            self.input_checklist(
+                                id=f"is_hire-{data['id']}",
+                                value=is_hire_value,
+                                options=[
+                                    {"label": "", "value": "Yes"},
+                                ],
+                                bootstrap="mb-3 ms-2"
+                            )
+                        ], className='d-flex')
+                    ], width=3),
+                ]),
+                dbc.Row([
+                    dbc.Col([
+                        self.lable("Details", for_input="detail"),
+                        self.input_textarea(
+                            id="detail",
+                            value=f'{data["details"]}',
+                            rows=2,
+                            height="50px"
+                        )
+                    ], width=12),
+                ]),
+                self.btn(id=f'update-button-{data["id"]}', text="Update", color="info"),
+                html.Span(id=f'submit-msg-{data["id"]}'),
+                dcc.Store(id=f'n-clicks-store-{data["id"]}', data={'n_clicks': 0})
             ])
         ], class_name="my-3")
         return card

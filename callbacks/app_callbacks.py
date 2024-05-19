@@ -1,9 +1,9 @@
 from dash import callback, callback_context
 from dash.dependencies import Input, Output, State
 
+from database.db_helper import DbHelper
 from pages import add_bid, home
 from utils.utils import Utils
-from database.db_helper import DbHelper
 
 home_layouts = home.Home()
 add_bid_layouts = add_bid.AddBid()

@@ -1,6 +1,7 @@
 import logging
 import sqlite3
 from datetime import datetime
+
 import pandas as pd
 from decouple import config
 
@@ -91,7 +92,10 @@ class Bids:
     def get_all_as_df(self) -> pd.DataFrame:
         with sqlite3.connect(self.__db) as conn:
             df = pd.read_sql_query("SELECT * FROM bids", conn)
-        return df
+        df['bid_date'] = pd.to_datetime(df['bid_date'])
+        df['bid_hour'] = df['bid_hour'].astype(int)
+        sorted_df = df.sort_values(by=['bid_date', 'bid_hour', 'job_title'])
+        return sorted_df
 
 
 class DbHelper:

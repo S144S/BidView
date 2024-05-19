@@ -1,8 +1,11 @@
 import dash_bootstrap_components as dbc
-from dash import dcc, html
-from components.components import Components
 import pandas as pd
+from dash import dcc, html
+
+from components.components import Components
 from database.db_helper import DbHelper
+
+
 class Home:
     def __init__(self):
         """

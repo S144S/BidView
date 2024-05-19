@@ -1,6 +1,8 @@
 import dash_bootstrap_components as dbc
 from dash import dcc, html
+
 from components.components import Components
+
 
 class AddBid:
     def __init__(self):

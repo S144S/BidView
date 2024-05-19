@@ -10,7 +10,6 @@ from callbacks import app_callbacks as acb
 from components.components import Components
 from database.db_helper import DbHelper
 
-
 # Configure logging
 logs_dir = config("LOGS_DIR", default="logs")
 if not os.path.exists(logs_dir):
