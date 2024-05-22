@@ -23,7 +23,6 @@ class Home:
         :return: the layout of the home page
         """
         bids_data = self.db.bids.get_all_as_df()
-        print(bids_data)
         cards = []
         for _, data in bids_data.iterrows():
             card = self.cmp.bid_card(data)

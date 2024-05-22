@@ -99,7 +99,10 @@ class Bids:
             df = pd.read_sql_query("SELECT * FROM bids", conn)
         df['bid_date'] = pd.to_datetime(df['bid_date'])
         df['bid_hour'] = df['bid_hour'].astype(int)
-        sorted_df = df.sort_values(by=['bid_date', 'bid_hour', 'job_title'])
+        sorted_df = df.sort_values(
+            by=['bid_date', 'bid_hour', 'job_title'],
+            ascending=[False, False, True]
+        )
         return sorted_df
 
     def update_bid(
