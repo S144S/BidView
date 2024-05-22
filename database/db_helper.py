@@ -97,6 +97,72 @@ class Bids:
         sorted_df = df.sort_values(by=['bid_date', 'bid_hour', 'job_title'])
         return sorted_df
 
+    def update_bid(
+            self,
+            bid_id: int,
+            new_is_view: bool,
+            new_is_reply: bool,
+            new_is_hire: bool,
+            new_details: str
+    ) -> tuple:
+        """
+        Update the fields of a bid in the database.
+
+        :param bid_id: the ID of the bid to update
+        :type bid_id: int
+        :param new_is_view: the new value for is_view
+        :type new_is_view: bool
+        :param new_is_reply: the new value for is_reply
+        :type new_is_reply: bool
+        :param new_is_hire: the new value for is_hire
+        :type new_is_hire: bool
+        :param new_details: the new value for details
+        :type new_details: str
+        :return: a tuple containing the update status and the error message
+        :rtype: tuple
+        """
+        try:
+            conn = sqlite3.connect(self.__db)
+            cursor = conn.cursor()
+            # Retrieve the current values
+            sql = """SELECT is_view, is_reply, is_hire, details
+            FROM bids WHERE id = ?"""
+            cursor.execute(sql, (bid_id,))
+            row = cursor.fetchone()
+            if not row:
+                conn.close()
+                return False, "Bid ID not found"
+            # Check if there are changes
+            current_is_view = row[0]
+            current_is_reply = row[1]
+            current_is_hire = row[2]
+            current_details = row[3]
+            if (current_is_view == new_is_view and
+                current_is_reply == new_is_reply and
+                current_is_hire == new_is_hire and
+                current_details == new_details):
+                conn.close()
+                return False, "No changes detected"
+            # Update the fields
+            sql = """UPDATE bids SET
+            is_view = ?, is_reply = ?, is_hire = ?, details = ?
+            WHERE id = ?"""
+            params = (
+                new_is_view,
+                new_is_reply,
+                new_is_hire,
+                new_details,
+                bid_id
+            )
+            cursor.execute(sql, params)
+            conn.commit()
+            conn.close()
+            logger.info(f"bid #{bid_id} updated successfully")
+            return True, "Update successful"
+        except Exception as e:
+            logger.error(f"Error updating bid #{bid_id} -> {e}")
+            return False, f"Error updating bid fields -> {e}"
+
 
 class DbHelper:
     def __init__(self):

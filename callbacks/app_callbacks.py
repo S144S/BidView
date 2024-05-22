@@ -4,7 +4,6 @@ from dash.dependencies import Input, Output, State
 from database.db_helper import DbHelper
 from pages import add_bid, home
 from utils.utils import Utils
-import pandas as pd
 
 home_layouts = home.Home()
 add_bid_layouts = add_bid.AddBid()
@@ -15,9 +14,6 @@ db = DbHelper()
 def main_navigator():
     """
     The main navigator callback.
-
-    :param pathname: the current pathname
-    :return: the layout of the current page
     """
     @callback(
         Output('page-content', 'children'),
@@ -33,6 +29,9 @@ def main_navigator():
 
 
 def submit_add_bid_form():
+    """
+    The submit new bid callback.
+    """
     @callback(
             Output('submit-msg', 'children'),
             Output('submit-msg', 'className'),
@@ -62,11 +61,8 @@ def submit_add_bid_form():
     ):
         if n_clicks == 0:
             return "", "", n_click_store['n_clicks']
-        # Saeed td Frontend 2024-05-16 10 2 AI Generated Sanaz Anguilla 40 0.3 ['Yes'] fix 6660 ddfdsff
-        # Saeed td Frontend 2024-05-16 10 2 AI Generated Sanaz Anguilla 40 0.3 [] fix 6660 ddfdsff
         if n_clicks > 0:
             is_invite = bool(is_invite)
-            # print(bidder, title, category, date, hour, cost, version, name, country, spent, stars, is_invite, salary_type, salary, detail)
             status, msg, class_name = utils.validate_new_bid_data(
                 title, category, date, hour, cost, country, stars, salary_type
             )
@@ -84,45 +80,66 @@ def submit_add_bid_form():
             n_click_store['n_clicks'] = 0
             return msg, class_name, n_click_store['n_clicks']
 
+
 def update_bids():
+    """
+    The update bids callback.
+    """
     data = db.bids.get_all_as_df()
+
     @callback(
-        [Output(f'submit-msg-{bid["id"]}', 'children') for  _, bid in data.iterrows()],
-        [Output(f'submit-msg-{bid["id"]}', 'className') for  _, bid in data.iterrows()],
+        [Output(f'submit-msg-{bid["id"]}', 'children') for _, bid in data.iterrows()],
+        [Output(f'submit-msg-{bid["id"]}', 'className') for _, bid in data.iterrows()],
         [Input(f'update-button-{bid["id"]}', 'n_clicks') for _, bid in data.iterrows()],
-        [State(f'is_view-{bid["id"]}', 'value') for  _, bid in data.iterrows()],
-        [State(f'is_reply-{bid["id"]}', 'value') for  _, bid in data.iterrows()],
-        [State(f'is_hire-{bid["id"]}', 'value') for  _, bid in data.iterrows()],
-        [State(f'detail-{bid["id"]}', 'value') for  _, bid in data.iterrows()],
+        [State(f'is_view-{bid["id"]}', 'value') for _, bid in data.iterrows()],
+        [State(f'is_reply-{bid["id"]}', 'value') for _, bid in data.iterrows()],
+        [State(f'is_hire-{bid["id"]}', 'value') for _, bid in data.iterrows()],
+        [State(f'detail-{bid["id"]}', 'value') for _, bid in data.iterrows()],
         [State(f'submit-msg-{bid["id"]}', 'id') for _, bid in data.iterrows()],
     )
     def wrapper(*args):
         ctx = callback_context
         if not ctx.triggered:
             return ''
+        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+        bid_id = button_id.split('-')[-1]
+        idx = data.index[data['id'] == int(bid_id)][0]
+        new_is_view = bool(args[len(data) + idx])
+        new_is_reply = bool(args[2 * len(data) + idx])
+        new_is_hire = bool(args[3 * len(data) + idx])
+        new_detail = args[4 * len(data) + idx]
+        if len(new_detail) < 2 or "NO DETAILS" in new_detail:
+            new_detail = None
+        # Update the database
+        done, state = db.bids.update_bid(
+            bid_id, new_is_view, new_is_reply, new_is_hire, new_detail
+        )
+        if done:
+            msg = "Updated successfully! 😊"
+            class_name = "ms-2 text-success"
+        else:
+            if "not found" in state:
+                msg = "Bid not found in the database! 🤔"
+                class_name = "ms-2 text-danger"
+            elif "Error" in state:
+                msg = "Faild to update the bid! 🤦‍♂️"
+                class_name = "ms-2 text-danger"
+            elif "No changes" in state:
+                msg = "Nothing changed! 😉"
+                class_name = "ms-2 text-warning"
+            else:
+                msg = "Server isuue, try later! 😓"
+                class_name = "ms-2 text-danger"
+        # Create message
         updated_messages = []
         updated_classnames = []
         msg_data = []
-
-        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-        bid_id = button_id.split('-')[-1]
-        print(button_id, bid_id)
-        idx = data.index[data['id'] == int(bid_id)][0]
-        new_is_view = args[len(data) + idx]
-        new_is_reply = args[2 * len(data) + idx]
-        new_is_hire = args[3 * len(data) + idx]
-        new_detail = args[4 * len(data) + idx]
-        print(new_is_hire, new_is_reply, new_is_view)
-        print(new_detail)
-        print(len(data))
-        print(bid_id)
         for _ in range(len(data)):
             updated_messages.append('')
             updated_classnames.append('')
-        updated_messages[int(bid_id) - 1] = "Updated successfully!"
-        updated_classnames[int(bid_id) - 1] = 'ms-2 text-success'
+        updated_messages[int(bid_id) - 1] = msg
+        updated_classnames[int(bid_id) - 1] = class_name
 
         msg_data = updated_messages.copy()
         msg_data.extend(updated_classnames)
-        print(msg_data)
         return msg_data
