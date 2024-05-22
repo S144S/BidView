@@ -1,19 +1,17 @@
 import dash_bootstrap_components as dbc
 
 from components.components import Components
-from database.db_helper import DbHelper
 
 
-class Home:
+class AddBid:
     def __init__(self):
         """
-        Initialize the home page class.
+        Initialize the add new bid page class.
 
         :param: None
         :return: None
         """
         self.cmp = Components()
-        self.db = DbHelper()
 
     def layout(self):
         """
@@ -22,11 +20,11 @@ class Home:
         :param: None
         :return: the layout of the home page
         """
-        bids_data = self.db.bids.get_all_as_df()
-        print(bids_data)
-        cards = []
-        for _, data in bids_data.iterrows():
-            card = self.cmp.bid_card(data)
-            cards.append(card)
-
-        return dbc.Container(cards)
+        layout = dbc.Container([
+            self.cmp.page_title(
+                "Add New Bid",
+                bootstrap="mt-3 mb-3 text-center"
+            ),
+            self.cmp.add_bid_form()
+        ])
+        return layout

@@ -20,13 +20,21 @@ logger = logging.getLogger('root')
 # Configure the database
 db = DbHelper()
 
-# Initialize Dash app with the Bootstrap theme
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+# Initialize the main app
+app = dash.Dash(
+    __name__,
+    external_stylesheets=[dbc.themes.BOOTSTRAP],
+    title="BidView",
+    suppress_callback_exceptions=True
+)
 components = Components()
+
 
 # Define the app layout
 app.layout = components.navbar()
 acb.main_navigator()
+acb.submit_add_bid_form()
+acb.update_bids()
 
 if __name__ == '__main__':
     app.run_server(debug=True)
