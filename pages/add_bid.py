@@ -1,5 +1,4 @@
 import dash_bootstrap_components as dbc
-from dash import dcc, html
 
 from components.components import Components
 
@@ -22,7 +21,10 @@ class AddBid:
         :return: the layout of the home page
         """
         layout = dbc.Container([
-            self.cmp.page_title("Add New Bid", bootstrap="mt-3 mb-3 text-center"),
+            self.cmp.page_title(
+                "Add New Bid",
+                bootstrap="mt-3 mb-3 text-center"
+            ),
             self.cmp.add_bid_form()
         ])
         return layout

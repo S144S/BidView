@@ -1,6 +1,5 @@
 import logging
 import sqlite3
-from datetime import datetime
 
 import pandas as pd
 from decouple import config
@@ -90,6 +89,12 @@ class Bids:
             return False
 
     def get_all_as_df(self) -> pd.DataFrame:
+        """
+        Retrieve all data from the bids table as a pandas DataFrame.
+
+        :return: A pandas DataFrame containing all the data in the bids table
+        :rtype: pd.DataFrame
+        """
         with sqlite3.connect(self.__db) as conn:
             df = pd.read_sql_query("SELECT * FROM bids", conn)
         df['bid_date'] = pd.to_datetime(df['bid_date'])
@@ -137,10 +142,12 @@ class Bids:
             current_is_reply = row[1]
             current_is_hire = row[2]
             current_details = row[3]
-            if (current_is_view == new_is_view and
+            if (
+                current_is_view == new_is_view and
                 current_is_reply == new_is_reply and
                 current_is_hire == new_is_hire and
-                current_details == new_details):
+                current_details == new_details
+            ):
                 conn.close()
                 return False, "No changes detected"
             # Update the fields

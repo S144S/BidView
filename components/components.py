@@ -526,6 +526,8 @@ class Components:
         is_hire_value = []
         if data["is_hire"]:
             is_hire_value = ["Yes"]
+        star_value = f'{data["client_stars"]:.1f}'
+        state_value = f'{data["client_total_spent"]}$ Spent - {star_value} ★'
 
         card = dbc.Card([
             dbc.CardBody([
@@ -607,7 +609,7 @@ class Components:
                         self.lable("Client State", for_input="client_state"),
                         self.input_text(
                             id="client_state",
-                            value=f'{data["client_total_spent"]}$ Spent - {data["client_stars"]}★',
+                            value=state_value,
                             is_diable=True
                         )
                     ], width=3),
@@ -624,7 +626,10 @@ class Components:
                 dbc.Row([
                     dbc.Col([
                         html.Div([
-                            self.lable("Is Viewed?", for_input=f"is_view-{data['id']}"),
+                            self.lable(
+                                "Is Viewed?",
+                                for_input=f"is_view-{data['id']}"
+                            ),
                             self.input_checklist(
                                 id=f"is_view-{data['id']}",
                                 value=is_view_value,
@@ -637,7 +642,10 @@ class Components:
                     ], width=3),
                     dbc.Col([
                         html.Div([
-                            self.lable("Is Replied?", for_input=f"is_reply-{data['id']}"),
+                            self.lable(
+                                "Is Replied?",
+                                for_input=f"is_reply-{data['id']}"
+                            ),
                             self.input_checklist(
                                 id=f"is_reply-{data['id']}",
                                 value=is_reply_value,
@@ -650,7 +658,10 @@ class Components:
                     ], width=3),
                     dbc.Col([
                         html.Div([
-                            self.lable("Are You Hired?", for_input=f"is_hire-{data['id']}"),
+                            self.lable(
+                                "Are You Hired?",
+                                for_input=f"is_hire-{data['id']}"
+                            ),
                             self.input_checklist(
                                 id=f"is_hire-{data['id']}",
                                 value=is_hire_value,
@@ -664,7 +675,10 @@ class Components:
                 ]),
                 dbc.Row([
                     dbc.Col([
-                        self.lable("Details", for_input=f"detail-{data['id']}"),
+                        self.lable(
+                            "Details",
+                            for_input=f"detail-{data['id']}"
+                        ),
                         self.input_textarea(
                             id=f"detail-{data['id']}",
                             value=f'{data["details"]}',
@@ -673,7 +687,11 @@ class Components:
                         )
                     ], width=12),
                 ]),
-                self.btn(id=f'update-button-{data["id"]}', text="Update", color="info"),
+                self.btn(
+                    id=f'update-button-{data["id"]}',
+                    text="Update",
+                    color="info"
+                ),
                 html.Span(id=f'submit-msg-{data["id"]}')
             ])
         ], class_name="my-3")

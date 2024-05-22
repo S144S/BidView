@@ -88,14 +88,30 @@ def update_bids():
     data = db.bids.get_all_as_df()
 
     @callback(
-        [Output(f'submit-msg-{bid["id"]}', 'children') for _, bid in data.iterrows()],
-        [Output(f'submit-msg-{bid["id"]}', 'className') for _, bid in data.iterrows()],
-        [Input(f'update-button-{bid["id"]}', 'n_clicks') for _, bid in data.iterrows()],
-        [State(f'is_view-{bid["id"]}', 'value') for _, bid in data.iterrows()],
-        [State(f'is_reply-{bid["id"]}', 'value') for _, bid in data.iterrows()],
-        [State(f'is_hire-{bid["id"]}', 'value') for _, bid in data.iterrows()],
-        [State(f'detail-{bid["id"]}', 'value') for _, bid in data.iterrows()],
-        [State(f'submit-msg-{bid["id"]}', 'id') for _, bid in data.iterrows()],
+        [Output(
+            f'submit-msg-{bid["id"]}', 'children'
+        ) for _, bid in data.iterrows()],
+        [Output(
+            f'submit-msg-{bid["id"]}', 'className'
+        ) for _, bid in data.iterrows()],
+        [Input(
+            f'update-button-{bid["id"]}', 'n_clicks'
+        ) for _, bid in data.iterrows()],
+        [State(
+            f'is_view-{bid["id"]}', 'value'
+        ) for _, bid in data.iterrows()],
+        [State(
+            f'is_reply-{bid["id"]}', 'value'
+        ) for _, bid in data.iterrows()],
+        [State(
+            f'is_hire-{bid["id"]}', 'value'
+        ) for _, bid in data.iterrows()],
+        [State(
+            f'detail-{bid["id"]}', 'value'
+        ) for _, bid in data.iterrows()],
+        [State(
+            f'submit-msg-{bid["id"]}', 'id'
+        ) for _, bid in data.iterrows()],
     )
     def wrapper(*args):
         ctx = callback_context
