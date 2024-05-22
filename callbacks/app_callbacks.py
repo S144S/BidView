@@ -103,7 +103,7 @@ def update_bids():
         updated_messages = []
         updated_classnames = []
         msg_data = []
-        print(args)
+
         button_id = ctx.triggered[0]['prop_id'].split('.')[0]
         bid_id = button_id.split('-')[-1]
         print(button_id, bid_id)
@@ -114,43 +114,15 @@ def update_bids():
         new_detail = args[4 * len(data) + idx]
         print(new_is_hire, new_is_reply, new_is_view)
         print(new_detail)
-        # for _ in range(3):
-        #     if button_id.startswith(f'update-button-{bid_id}'):
-        #         msg_data.append('Success')
-        #         msg_data.append('ms-2 text-success')
-        #     else:
-        #         msg_data.append('')
-        #         msg_data.append('')
-        # print(msg_data)
-        # return msg_data
+        print(len(data))
+        print(bid_id)
+        for _ in range(len(data)):
+            updated_messages.append('')
+            updated_classnames.append('')
+        updated_messages[int(bid_id) - 1] = "Updated successfully!"
+        updated_classnames[int(bid_id) - 1] = 'ms-2 text-success'
 
-# def register_callbacks():
-#     data = [
-#         {"id": 1, "name": "Saeed", "phone": "09197241207"},
-#         {"id": 2, "name": "Nastaran", "phone": "09154243103"},
-#         {"id": 3, "name": "Hossein", "phone": "09122117222"},
-#         {"id": 4, "name": "Hossein", "phone": "09122117222"},
-#         {"id": 5, "name": "Hossein", "phone": "09122117222"}
-#     ]
-#     @callback(
-#         [Input(f'update-button-{user["id"]}', 'n_clicks') for user in data],
-#         [State(f'name-input-{user["id"]}', 'value') for user in data],
-#         [State(f'phone-input-{user["id"]}', 'value') for user in data]
-#     )
-#     def wrapper(*args):
-#         ctx = callback_context
-#         if not ctx.triggered:
-#             return ''
-        
-#         button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-#         user_id = button_id.split('-')[-1]
-#         print(user_id)
-#         idx = [i for i, user in enumerate(data) if user["id"] == int(user_id)][0]
-#         print(idx)
-
-#         new_name = args[len(data) + idx]
-#         new_phone = args[2 * len(data) + idx]
-
-#         print(new_name, new_phone)
-        
-#         return None
+        msg_data = updated_messages.copy()
+        msg_data.extend(updated_classnames)
+        print(msg_data)
+        return msg_data
