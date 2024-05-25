@@ -23,7 +23,7 @@ db = DbHelper()
 # Initialize the main app
 app = dash.Dash(
     __name__,
-    external_stylesheets=[dbc.themes.BOOTSTRAP],
+    external_stylesheets=[dbc.themes.DARKLY],
     title="BidView",
     suppress_callback_exceptions=True
 )
