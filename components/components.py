@@ -1,6 +1,7 @@
 from datetime import datetime
 
 import dash_bootstrap_components as dbc
+from dash_iconify import DashIconify
 import pandas as pd
 import pycountry
 from dash import dcc, html
@@ -696,3 +697,42 @@ class Components:
             ])
         ], class_name="my-3")
         return card
+
+    def summary_info_card(self, summary_info: dict, icon_name: str, width=4):
+        title_text = summary_info["title"]
+        title = html.Div(
+            title_text,
+            className="text-xs font-weight-bold text-info text-uppercase mb-1"
+        )
+        info = html.Div(
+            "50000",
+            className="h5 mb-0 font-weight-bold text-gray-800"
+        )
+        icon = DashIconify(
+            icon="octicon:info-16",
+            style={"width": "32px", "height": "32px"}
+        )
+
+        card = html.Div([
+            html.Div([title, info], className="col mr-2"),
+            html.Div([icon], className="col-auto")
+        ], className="row no-gutters align-items-center")
+
+        cmp = dbc.Col(
+            dbc.Card(
+                dbc.CardBody([
+                    card
+                ])
+            ), width=width, className="border-left-primary shadow h-100 py-2"
+        )
+        return cmp
+
+    def summary_info(self, summary_info: dict):
+        cmp = html.Div([
+            dbc.Row([
+                self.summary_info_card({"title": "Total Bids"}, ""),
+                self.summary_info_card({"title": "Hired"}, ""),
+                self.summary_info_card({"title": "Not Hired"}, ""),
+            ])
+        ])
+        return cmp

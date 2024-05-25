@@ -2,11 +2,12 @@ from dash import callback, callback_context
 from dash.dependencies import Input, Output, State
 
 from database.db_helper import DbHelper
-from pages import add_bid, home
+from pages import add_bid, home, analytics
 from utils.utils import Utils
 
 home_layouts = home.Home()
 add_bid_layouts = add_bid.AddBid()
+analytics_layouts = analytics.Analytics()
 utils = Utils()
 db = DbHelper()
 
@@ -21,7 +22,7 @@ def main_navigator():
     )
     def wrapper(pathname):
         if pathname == "/analysis":
-            return None
+            return analytics_layouts.layout()
         elif pathname == "/add-bid":
             return add_bid_layouts.layout()
         else:
