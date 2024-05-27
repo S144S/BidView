@@ -35,6 +35,7 @@ app.layout = components.navbar()
 acb.main_navigator()
 acb.submit_add_bid_form()
 acb.update_bids()
+acb.update_chart()
 
 if __name__ == '__main__':
     app.run_server(debug=True)
