@@ -6,6 +6,7 @@ import plotly.express as px
 
 from components.components import Components
 from database.db_helper import DbHelper
+from utils.utils import Utils
 
 
 class Analytics:
@@ -18,10 +19,30 @@ class Analytics:
         """
         self.cmp = Components()
         self.db = DbHelper()
+        self.utils = Utils()
 
     def layout(self):
+        """
+        Create the layout of the home page.
+
+        :param: None
+        :return: the layout of the home page.
+        """
+        data = self.db.bids.get_all_as_df()
+        summary_info = self.utils.prepare_summary_info(data)
         layout = dbc.Container([
-            self.cmp.summary_info({})
+            self.cmp.summary_info(summary_info),
+            html.Br(),
+            dcc.Dropdown(
+                id='chart-dropdown',
+                options=[
+                    {'label': 'Bar Plot', 'value': 'bar'},
+                    {'label': 'Pie Chart', 'value': 'pie'},
+                    {'label': 'Scatter Plot', 'value': 'scatter'}
+                ],
+                value='bar'  # Default value
+            ),
+            dcc.Graph(id='chart-output')
         ])
         return layout
     # def layout(self):

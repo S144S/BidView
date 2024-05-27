@@ -698,18 +698,17 @@ class Components:
         ], class_name="my-3")
         return card
 
-    def summary_info_card(self, summary_info: dict, icon_name: str, width=4):
-        title_text = summary_info["title"]
+    def summary_info_card(self, summary_info: dict, width=3):
         title = html.Div(
-            title_text,
+            summary_info["title"],
             className="text-xs font-weight-bold text-info text-uppercase mb-1"
         )
         info = html.Div(
-            "50000",
+            summary_info["value"],
             className="h5 mb-0 font-weight-bold text-gray-800"
         )
         icon = DashIconify(
-            icon="octicon:info-16",
+            icon=summary_info["icon"],
             style={"width": "32px", "height": "32px"}
         )
 
@@ -727,12 +726,40 @@ class Components:
         )
         return cmp
 
-    def summary_info(self, summary_info: dict):
+    def summary_info(self, summary_info: list):
+        part_1_rows = []
+        part_2_rows = []
+        part_3_rows = []
+        i = 1
+        for item in summary_info:
+            part_1_rows.append(self.summary_info_card(item))
+            i += 1
+            if i > 4:
+                break
+        summary_info = summary_info[4:]
+        i = 1
+        for item in summary_info:
+            part_2_rows.append(self.summary_info_card(item))
+            i += 1
+            if i > 4:
+                break
+        summary_info = summary_info[4:]
+        i = 1
+        for item in summary_info:
+            part_3_rows.append(self.summary_info_card(item))
+            i += 1
+            if i > 4:
+                break
         cmp = html.Div([
-            dbc.Row([
-                self.summary_info_card({"title": "Total Bids"}, ""),
-                self.summary_info_card({"title": "Hired"}, ""),
-                self.summary_info_card({"title": "Not Hired"}, ""),
-            ])
+            dbc.Row(part_1_rows, className="my-2"),
+            dbc.Row(part_2_rows, className="my-2"),
+            dbc.Row(part_3_rows, className="my-2")
         ])
+        # cmp = html.Div([
+        #     dbc.Row([
+        #         self.summary_info_card({"title": "Total Bids"}, ""),
+        #         self.summary_info_card({"title": "Hired"}, ""),
+        #         self.summary_info_card({"title": "Not Hired"}, ""),
+        #     ])
+        # ])
         return cmp
