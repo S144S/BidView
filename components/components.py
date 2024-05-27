@@ -763,3 +763,15 @@ class Components:
         #     ])
         # ])
         return cmp
+
+    def chart_dropdown(self):
+        cmp = self.input_select(
+            id = "chart-select",
+            options=config("CHARTS").split(", "),
+            value=config("CHARTS").split(", ")[0],
+            bootstrap="text-light mt-2 mb-2"
+        )
+        return cmp
+
+    def analytics_chart(self):
+        return dcc.Graph(id='chart-output')

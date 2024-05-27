@@ -32,17 +32,8 @@ class Analytics:
         summary_info = self.utils.prepare_summary_info(data)
         layout = dbc.Container([
             self.cmp.summary_info(summary_info),
-            html.Br(),
-            dcc.Dropdown(
-                id='chart-dropdown',
-                options=[
-                    {'label': 'Bar Plot', 'value': 'bar'},
-                    {'label': 'Pie Chart', 'value': 'pie'},
-                    {'label': 'Scatter Plot', 'value': 'scatter'}
-                ],
-                value='bar'  # Default value
-            ),
-            dcc.Graph(id='chart-output')
+            self.cmp.chart_dropdown(),
+            self.cmp.analytics_chart()
         ])
         return layout
     # def layout(self):
