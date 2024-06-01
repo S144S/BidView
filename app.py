@@ -34,10 +34,13 @@ components = Components()
 
 # Define the app layout
 app.layout = components.navbar()
-acb.main_navigator()
-acb.submit_add_bid_form()
-acb.update_bids()
-acb.update_chart()
+try:
+    acb.main_navigator()
+    acb.submit_add_bid_form()
+    acb.update_bids()
+    acb.update_chart()
+except Exception as e:
+    logger.error(f"Faild to register callbacks -> {e}")
 
 if __name__ == '__main__':
-    app.run_server(debug=config("DEBUG_MODE", default=False))
+    app.run_server(debug=True)

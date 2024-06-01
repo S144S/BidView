@@ -251,6 +251,8 @@ class Utils:
             )
         )
         # Bidding rate
+        if days_passed <= 0:
+            days_passed = 1
         bid_rate = total_bid // days_passed
         info.append(
             self.create_info_dict(
@@ -268,7 +270,7 @@ class Utils:
                 "lucide:view"
             )
         )
-        # rply rate
+        # reply rate
         reply_rate = (total_reply / total_bid) * 100
         info.append(
             self.create_info_dict(

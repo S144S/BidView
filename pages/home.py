@@ -25,8 +25,11 @@ class Home:
         """
         bids_data = self.db.bids.get_all_as_df()
         cards = []
-        for _, data in bids_data.iterrows():
-            card = self.cmp.bid_card(data)
-            cards.append(card)
+        if len(bids_data) > 0:
+            for _, data in bids_data.iterrows():
+                card = self.cmp.bid_card(data)
+                cards.append(card)
 
-        return dbc.Container(cards)
+            return dbc.Container(cards)
+        else:
+            return None

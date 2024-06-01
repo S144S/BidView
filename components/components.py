@@ -342,7 +342,7 @@ class Components:
                         self.lable("Bidder", for_input="bidder"),
                         self.input_text(
                             id="bidder",
-                            value="Saeed",
+                            value=config("DEFUALT_BIDDER"),
                             placeholder="",
                             is_diable=True
                         )
@@ -429,7 +429,7 @@ class Components:
                             placeholder="Spent",
                             min=0,
                             max=5000000000000000000,
-                            step=10
+                            step=1
                         )
                     ], width=3),
                     dbc.Col([
@@ -472,7 +472,7 @@ class Components:
                             placeholder="Salary",
                             min=20,
                             max=5000000000000000000,
-                            step=10
+                            step=1
                         )
                     ], width=3)
                 ]),
