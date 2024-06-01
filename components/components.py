@@ -1,15 +1,15 @@
 from datetime import datetime
 
 import dash_bootstrap_components as dbc
-from dash_iconify import DashIconify
 import pandas as pd
 import pycountry
 from dash import dcc, html
+from dash_iconify import DashIconify
 from decouple import config
 
 
 class Components:
-    def __init__(self,):
+    def __init__(self) -> None:
         """
         Initialize the components class.
 
@@ -327,12 +327,13 @@ class Components:
         cmp = html.Span(text, style=label_style)
         return html.Div([cmp], className="mb-3")
 
-    def add_bid_form(self):
+    def add_bid_form(self) -> dbc.Card:
         """
         Create the add bid form.
 
         :param: None
         :return: the add bid form component
+        :rtype: dbc.Card
         """
         cmp = dbc.Card([
             dbc.CardBody([
@@ -698,7 +699,17 @@ class Components:
         ], class_name="my-3")
         return card
 
-    def summary_info_card(self, summary_info: dict, width=3):
+    def summary_info_card(self, summary_info: dict, width=3) -> dbc.Col:
+        """
+        Create the summary info card.
+
+        :param summary_info: the summary info
+        :type summary_info: dictionary
+        :param width: the width of card, defualt to 3
+        :type width: int
+        :return: summary info card
+        :rtype: dbc.Col
+        """
         title = html.Div(
             summary_info["title"],
             className="text-xs font-weight-bold text-info text-uppercase mb-1"
@@ -726,7 +737,15 @@ class Components:
         )
         return cmp
 
-    def summary_info(self, summary_info: list):
+    def summary_info(self, summary_info: list) -> html.Div:
+        """
+        Create the summary info section.
+
+        :param summary_info: the summary info
+        :type summary_info: list
+        :return: summary info section
+        :rtype: html.Div
+        """
         part_1_rows = []
         part_2_rows = []
         part_3_rows = []
@@ -755,23 +774,30 @@ class Components:
             dbc.Row(part_2_rows, className="my-2"),
             dbc.Row(part_3_rows, className="my-2")
         ])
-        # cmp = html.Div([
-        #     dbc.Row([
-        #         self.summary_info_card({"title": "Total Bids"}, ""),
-        #         self.summary_info_card({"title": "Hired"}, ""),
-        #         self.summary_info_card({"title": "Not Hired"}, ""),
-        #     ])
-        # ])
         return cmp
 
-    def chart_dropdown(self):
+    def chart_dropdown(self) -> dcc.Dropdown:
+        """
+        Create the charts option dropw down.
+
+        :param: None
+        :return: chats options drop down
+        :rtype: dcc.Dropdown
+        """
         cmp = self.input_select(
-            id = "chart-select",
+            id="chart-select",
             options=config("CHARTS").split(", "),
             value=config("CHARTS").split(", ")[0],
             bootstrap="text-light mt-2 mb-2"
         )
         return cmp
 
-    def analytics_chart(self):
+    def analytics_chart(self) -> dcc.Graph:
+        """
+        Create charts area.
+
+        :param: None
+        :return: chart area
+        :rtype: dcc.Graph
+        """
         return dcc.Graph(id='chart-output')

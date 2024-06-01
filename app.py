@@ -38,4 +38,4 @@ acb.update_bids()
 acb.update_chart()
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=config("DEBUG_MODE", default=False))

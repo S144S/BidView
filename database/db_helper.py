@@ -8,11 +8,12 @@ logger = logging.getLogger('db')
 
 
 class Bids:
-    def __init__(self, db_file: str):
+    def __init__(self, db_file: str) -> None:
         """
         Initialize the bids database class.
 
         :param db_file: path to database file
+        :type db_file: str
         :return: None
         """
         self.__db = db_file
@@ -20,13 +21,10 @@ class Bids:
 
     def setup(self) -> bool:
         """
-        Setup the bids table.
+        Setup the bids table
 
-        Parameters:
-            None
-
-        Returns:
-            bool: True if the table was setup successfully, False otherwise.
+        :param: None
+        :return: None
         """
         try:
             sql = """CREATE TABLE IF NOT EXISTS bids (
@@ -92,6 +90,7 @@ class Bids:
         """
         Retrieve all data from the bids table as a pandas DataFrame.
 
+        :param: None
         :return: A pandas DataFrame containing all the data in the bids table
         :rtype: pd.DataFrame
         """
@@ -175,6 +174,12 @@ class Bids:
 
 
 class DbHelper:
-    def __init__(self):
+    def __init__(self) -> None:
+        """
+        Initialize the database class.
+
+        :param: None
+        :return: None
+        """
         db = config("DB_FILE", default="database/db.sqlite")
         self.bids = Bids(db_file=db)
