@@ -23,7 +23,7 @@ db = DbHelper()
 # Initialize the main app
 app = dash.Dash(
     __name__,
-    external_stylesheets=[dbc.themes.BOOTSTRAP],
+    external_stylesheets=[dbc.themes.CYBORG],
     title="BidView",
     suppress_callback_exceptions=True
 )
@@ -35,6 +35,7 @@ app.layout = components.navbar()
 acb.main_navigator()
 acb.submit_add_bid_form()
 acb.update_bids()
+acb.update_chart()
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=config("DEBUG_MODE", default=False))

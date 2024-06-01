@@ -1,12 +1,14 @@
+import plotly.express as px
 from dash import callback, callback_context
 from dash.dependencies import Input, Output, State
 
 from database.db_helper import DbHelper
-from pages import add_bid, home
+from pages import add_bid, analytics, home
 from utils.utils import Utils
 
 home_layouts = home.Home()
 add_bid_layouts = add_bid.AddBid()
+analytics_layouts = analytics.Analytics()
 utils = Utils()
 db = DbHelper()
 
@@ -21,7 +23,7 @@ def main_navigator():
     )
     def wrapper(pathname):
         if pathname == "/analysis":
-            return None
+            return analytics_layouts.layout()
         elif pathname == "/add-bid":
             return add_bid_layouts.layout()
         else:
@@ -159,3 +161,65 @@ def update_bids():
         msg_data = updated_messages.copy()
         msg_data.extend(updated_classnames)
         return msg_data
+
+
+def update_chart():
+    """
+    The update charts callback.
+    """
+    df = db.bids.get_all_as_df()
+
+    @callback(
+        Output('chart-output', 'figure'),
+        Input('chart-select', 'value')
+    )
+    def wrapper(chart_type):
+        if chart_type == "Hours":
+            df_hour = df.groupby('bid_hour').size().reset_index(name='count')
+            fig = px.bar(
+                df_hour,
+                x='bid_hour',
+                y='count',
+                title='Bids by Hour'
+            )
+            fig.update_layout(
+                xaxis=dict(
+                    tickmode='linear',
+                    tick0=7,
+                    dtick=1,
+                    range=[7, 23]
+                )
+            )
+        elif chart_type == "Job Categories":
+            fig = px.pie(
+                df,
+                names='job_category',
+                title='Job Categories Distribution'
+            )
+        elif chart_type == "Salary Type":
+            fig = px.pie(
+                df,
+                names='salary_type',
+                title='Salary Type Distribution'
+            )
+        elif chart_type == "Proposal Types":
+            fig = px.pie(
+                df,
+                names='proposal_version',
+                title='Proposal Types Distribution'
+            )
+        elif chart_type == "Destination Countries":
+            country_counts = df['client_country'].value_counts().reset_index()
+            country_counts.columns = ['country', 'count']
+            fig = px.choropleth(
+                country_counts,
+                locations='country',
+                locationmode='country names',
+                color='count',
+                hover_name='country',
+                color_continuous_scale=px.colors.sequential.Plasma,
+                title='The most popular countries'
+            )
+        else:
+            fig = {}
+        return fig
