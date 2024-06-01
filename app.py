@@ -27,6 +27,8 @@ app = dash.Dash(
     title="BidView",
     suppress_callback_exceptions=True
 )
+app._favicon = "images/bidview_favicon.png"
+
 components = Components()
 
 
