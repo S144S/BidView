@@ -37,7 +37,7 @@ then go to BidView directory.
 1. make a copy of .env.sample
 2. change .env.sample to .env
 3. Open .env file with any editor you want(even notepad)
-4. Feel free to change CATEGORIES and PROPOSAL_VERSION with your desire as in the existing example
+4. Feel free to change DEFUALT_BIDDER, CATEGORIES and PROPOSAL_VERSION with your desire as in the existing example
 5. Keep the rest unchanged
 
 #### Step 3: Set Up Virtual Environment
