@@ -46,15 +46,17 @@ class Utils:
         """
         msg = "New bid submited successfully!"
         class_name = "ms-3 text-success"
-        required_params = [
-            title, category, hour, cost, country, stars, salary_type
-        ]
+        required_params = [title, category, hour, country, salary_type]
         status = True
         if not all(required_params):
             msg = "title, category, hour, cost, stars"
             msg += " and salary type are required!"
             class_name = "ms-3 text-danger"
             status = False
+        if not cost:
+            cost = 0
+        if not stars:
+            stars = 0
         given_date = datetime.strptime(date, "%Y-%m-%d").date()
         today = datetime.today().date()
         last_permited_day = today - timedelta(days=14)

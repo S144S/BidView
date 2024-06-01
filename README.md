@@ -23,7 +23,7 @@ As long as we transfer *BidView* to the cloud servers and it is available online
 #### Step 1: Cloning
 **This project is implemented with Python, make sure you have Python 3.10 or higher on your system.**
 
-Download [latest release](https://github.com/S144S/BidView/archive/refs/tags/v1.0.0.zip) of the BidView
+Download [latest release](https://github.com/S144S/BidView/archive/refs/tags/v1.1.0.zip) of the BidView
 
 or
 `git clone https://github.com/S144S/BidView.git`
@@ -37,7 +37,7 @@ then go to BidView directory.
 1. make a copy of .env.sample
 2. change .env.sample to .env
 3. Open .env file with any editor you want(even notepad)
-4. Feel free to change CTEGORIES, PROPOSAL_VERSION, CHARTS with your desire as in the existing example
+4. Feel free to change CATEGORIES and PROPOSAL_VERSION with your desire as in the existing example
 5. Keep the rest unchanged
 
 #### Step 3: Set Up Virtual Environment

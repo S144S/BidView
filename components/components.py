@@ -359,7 +359,7 @@ class Components:
                         self.lable("Job Category", for_input="category"),
                         self.input_select(
                             id="category",
-                            options=config("CTEGORIES").split(", "),
+                            options=config("CATEGORIES").split(", "),
                             placeholder="Select the job category"
                         )
                     ], width=3)
