@@ -255,7 +255,6 @@ class Utils:
         # Bidding rate
         if days_passed <= 0:
             days_passed = 1
-        print(f"Days = {days_passed} - bids = {total_bid}")
         bid_rate = total_bid / days_passed
         info.append(
             self.create_info_dict(
@@ -274,7 +273,6 @@ class Utils:
             )
         )
         # reply rate
-        print(f"rep = {total_reply} - bids = {total_bid}")
         reply_rate = (total_reply / total_bid) * 100
         info.append(
             self.create_info_dict(

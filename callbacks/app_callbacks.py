@@ -167,13 +167,12 @@ def update_chart():
     """
     The update charts callback.
     """
-    df = db.bids.get_all_as_df()
-
     @callback(
         Output('chart-output', 'figure'),
         Input('chart-select', 'value')
     )
     def wrapper(chart_type):
+        df = db.bids.get_all_as_df()
         if chart_type == "Hours":
             df_hour = df.groupby('bid_hour').size().reset_index(name='count')
             fig = px.bar(
