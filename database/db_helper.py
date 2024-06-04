@@ -200,6 +200,7 @@ class Bids:
                 current_details == new_details
             ):
                 conn.close()
+                logger.debug(f"bid #{bid_id} has no change!")
                 return False, "No changes detected"
             # Update the fields
             sql = """UPDATE bids SET

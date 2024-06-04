@@ -119,9 +119,10 @@ def update_bids():
         ctx = callback_context
         if not ctx.triggered:
             return ''
+        df = data.reset_index(drop=True)
         button_id = ctx.triggered[0]['prop_id'].split('.')[0]
         bid_id = button_id.split('-')[-1]
-        idx = data.index[data['id'] == int(bid_id)][0]
+        idx = df.index[data['id'] == int(bid_id)][0]
         new_is_view = bool(args[len(data) + idx])
         new_is_reply = bool(args[2 * len(data) + idx])
         new_is_hire = bool(args[3 * len(data) + idx])
@@ -155,9 +156,9 @@ def update_bids():
         for _ in range(len(data)):
             updated_messages.append('')
             updated_classnames.append('')
-        updated_messages[int(bid_id) - 1] = msg
-        updated_classnames[int(bid_id) - 1] = class_name
-
+        index = df.index[data['id'] == int(bid_id)].tolist()[0]
+        updated_messages[index] = msg
+        updated_classnames[index] = class_name
         msg_data = updated_messages.copy()
         msg_data.extend(updated_classnames)
         return msg_data
@@ -167,13 +168,12 @@ def update_chart():
     """
     The update charts callback.
     """
-    df = db.bids.get_all_as_df()
-
     @callback(
         Output('chart-output', 'figure'),
         Input('chart-select', 'value')
     )
     def wrapper(chart_type):
+        df = db.bids.get_all_as_df()
         if chart_type == "Hours":
             df_hour = df.groupby('bid_hour').size().reset_index(name='count')
             fig = px.bar(

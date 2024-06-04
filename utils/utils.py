@@ -255,11 +255,11 @@ class Utils:
         # Bidding rate
         if days_passed <= 0:
             days_passed = 1
-        bid_rate = total_bid // days_passed
+        bid_rate = total_bid / days_passed
         info.append(
             self.create_info_dict(
                 "Bid Rate",
-                f"{bid_rate} bid/day",
+                f"{bid_rate:.1f} bid/day",
                 "uil:heart-rate"
             )
         )
