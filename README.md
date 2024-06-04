@@ -33,6 +33,9 @@ or
 
 then go to BidView directory.
 
+#### Last Step if you're using Windows
+Just double-click on ran.bat file 😊.
+
 #### Step 2: Change settings based on your desired
 1. make a copy of .env.sample
 2. change .env.sample to .env
